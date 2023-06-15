@@ -11,13 +11,13 @@ _Updated_: 2023/06/15
 
 This is an implementation of `Star Wars` example in Ballerina. The `Star Wars` schema and resolvers are based on popular Star Wars characters. This sample implementation can be used to learn the Ballerina GraphQL package functionalities.
 
-In this implementation, it supports both query and mutation operations. Subscriptions are not included in this example due to the limitation coming from the Ballerina GraphQL package. Support for Subscriptions are planned in near future releases.
+It includes the Query, Mutation, and Subscription operations. It also includes the GraphQL Union types and Interfaces.
 
 ## Implementation
 
 Implementation is purely done using the Ballerina GraphQL package. In order to maintain the simplicity a simple in memory datasource is created using Ballerina tables.
 
-Also this implementation extensively uses the Ballerina Query feature. A SQL like query language which radically simplifies the implementation of the service.
+It extensively uses the Ballerina Query feature. A SQL like query language which radically simplifies the implementation of the service.
 
 Following is the complete GraphQL schema of the API:
 
@@ -37,6 +37,24 @@ type Query {
   starship(id: String!): Starship
   "Returns search results by text, or null if search item is not found"
   search(text: String!): [SearchResult!]
+}
+
+type Mutation {
+    "Add new reviews and return the review values"
+    createReview(
+        "Episode name"
+        episode: Episode!
+        "Review of the episode"
+        reviewInput: ReviewInput!
+    ): Review!
+}
+
+type Subscription {
+    "Subscribe to review updates"
+    reviewAdded(
+        "Episode name"
+        episode: Episode!
+    ): Review!
 }
 
 "A mechanical character from the Star Wars universe"
@@ -63,12 +81,6 @@ type Droid implements Character {
   appearsIn: [Episode!]!
   "This droid's primary function"
   primaryFunction: String
-}
-
-enum Episode {
-  JEDI
-  EMPIRE
-  NEWHOPE
 }
 
 "A humanoid creature from the Star Wars universe"
@@ -109,32 +121,20 @@ type Review {
   commentary: String
 }
 
+enum Episode {
+    JEDI
+    EMPIRE
+    NEWHOPE
+}
+
 "auto-generated union type from Ballerina"
 union SearchResult = Human|Droid|Starship
-
-type Mutation {
-  "Add new reviews and return the review values"
-  createReview(
-    "Episode name"
-    episode: Episode!
-    "Review of the episode"
-    reviewInput: ReviewInput!
-  ): Review!
-}
 
 input ReviewInput {
   stars: Int!
   commentary: String
 }
-
-type Subscription {
-  "Subscribe to review updates"
-  reviewAdded(
-    "Episode name"
-    episode: Episode!
-  ): Review!
-}
-``````
+```
 
 ## Starting the Service
 
