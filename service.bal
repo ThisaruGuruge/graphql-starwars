@@ -14,10 +14,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import starwars.datasource as ds;
+
 import ballerina/graphql;
+import ballerina/io;
+
 import xlibb/pubsub;
 
-import starwars.datasource as ds;
+configurable int port = 9090;
 
 type SearchResult Human|Droid|Starship;
 
@@ -43,8 +47,13 @@ public type ReviewInput record {|
         enabled: true
     }
 }
-service /graphql on new graphql:Listener(9090) {
+service /starwars on new graphql:Listener(port) {
     private final pubsub:PubSub pubsub = new;
+
+    function init() {
+        io:println(string `💃 Server ready at http://localhost:${port}/starwars`);
+        io:println(string `Try your queries here: http://localhost:${port}/graphiql`);
+    }
 
     # Fetch the hero of the Star Wars
     # + return - The hero

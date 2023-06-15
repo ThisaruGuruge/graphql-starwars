@@ -18,7 +18,7 @@ import ballerina/file;
 import ballerina/http;
 import ballerina/io;
 
-final http:Client httpClient = check new("localhost:9090/graphql", httpVersion = "1.1");
+final http:Client httpClient = check new("localhost:9090/starwars", httpVersion = "1.1");
 
 function getJsonPayloadFromService(string document, json variables = {}, string? operationName = ()) returns json|error {
     if operationName is string {
