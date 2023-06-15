@@ -18,7 +18,7 @@ import ballerina/file;
 import ballerina/http;
 import ballerina/io;
 
-final http:Client httpClient = check new("http://localhost:9090/graphql", httpVersion = "1.1");
+final http:Client httpClient = check new("localhost:9090/graphql", httpVersion = "1.1");
 
 function getJsonPayloadFromService(string document, json variables = {}, string? operationName = ()) returns json|error {
     if operationName is string {
@@ -34,6 +34,6 @@ function getJsonPayloadFromService(string document, json variables = {}, string?
 
 isolated function getGraphqlDocumentFromFile(string fileName) returns string|error {
     string gqlFileName = string `${fileName}.graphql`;
-    string path = check file:joinPath("starwars", "tests", "resources", "documents", gqlFileName);
+    string path = check file:joinPath("tests", "resources", "documents", gqlFileName);
     return io:fileReadString(path);
 }

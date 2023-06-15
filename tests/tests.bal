@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/test;
-import ballerina/lang.runtime;
-import ballerina/websocket;
 
 @test:Config {}
 function testHero() returns error? {
@@ -262,57 +260,4 @@ function testFriends() returns error? {
         }
     };
     test:assertEquals(actualPayload, expectedPayload);
-}
-
-@test:Config {
-    enable: false // Disabled the test becasue the service is not closing when this test is done.
-}
-function testReviewAdded() returns error? {
-    string document = check getGraphqlDocumentFromFile("reviewAdded");
-    future<error?> subscribeResult = start subscribeReviewAdded(document);
-    runtime:sleep(1);
-    future<error?> addReviewResult = start addReview(document);
-
-    check wait addReviewResult;
-    check wait subscribeResult;
-}
-
-function addReview(string document) returns error? {
-    json variables = {
-        episode: "EMPIRE",
-        review: {
-            stars: 5,
-            commentary: "Nice!"
-        }
-    };
-    json actualPayload = check getJsonPayloadFromService(document, variables, operationName = "CreateReview");
-    json expectedPayload = {
-        data: {
-            review:
-                {
-                stars: 5,
-                commentary: "Nice!"
-            }
-        }
-    };
-    test:assertEquals(actualPayload, expectedPayload);
-}
-
-function subscribeReviewAdded(string document) returns error? {
-    json variables = {
-        episode: "EMPIRE",
-        // TODO: This field is not required. We can remove the `review` field from the `variables` map after fixing #4206
-        review: {
-            stars: 5,
-            commentary: "Nice!"
-        }
-    };
-    websocket:ClientConfiguration config = {subProtocols: ["graphql-transport-ws"]};
-    websocket:Client wsClient = check new ("ws://localhost:9090/graphql", config);
-    check initiateGraphqlWsConnection(wsClient);
-    check sendSubscriptionMessage(wsClient, document, variables = variables, operationName = "ReviewAdded");
-
-    json expectedMsgPayload = {data: {review: {stars: 5, commentary: "Nice!"}}};
-    check validateNextMessage(wsClient, expectedMsgPayload);
-    check closeConnection(wsClient);
 }

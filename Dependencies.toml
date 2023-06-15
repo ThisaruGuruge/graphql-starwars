@@ -214,9 +214,6 @@ version = "0.0.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]
-modules = [
-	{org = "ballerina", packageName = "lang.runtime", moduleName = "lang.runtime"}
-]
 
 [[package]]
 org = "ballerina"
@@ -343,9 +340,6 @@ dependencies = [
 	{org = "ballerina", name = "oauth2"},
 	{org = "ballerina", name = "time"}
 ]
-modules = [
-	{org = "ballerina", packageName = "websocket", moduleName = "websocket"}
-]
 
 [[package]]
 org = "graphql"
@@ -356,9 +350,7 @@ dependencies = [
 	{org = "ballerina", name = "graphql"},
 	{org = "ballerina", name = "http"},
 	{org = "ballerina", name = "io"},
-	{org = "ballerina", name = "lang.runtime"},
 	{org = "ballerina", name = "test"},
-	{org = "ballerina", name = "websocket"},
 	{org = "xlibb", name = "pubsub"}
 ]
 modules = [
