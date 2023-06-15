@@ -1,0 +1,12 @@
+# Build files
+target
+build
+
+# Ide files
+*.iml
+.code
+.idea
+.vscode
+
+# OS files
+.DS_Store
