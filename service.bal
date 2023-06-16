@@ -45,13 +45,16 @@ public type ReviewInput record {|
 @graphql:ServiceConfig {
     graphiql: {
         enabled: true
+    },
+    cors: {
+        allowOrigins: ["*"]
     }
 }
-service /starwars on new graphql:Listener(port) {
+service /graphql on new graphql:Listener(port) {
     private final pubsub:PubSub pubsub = new;
 
     function init() {
-        io:println(string `💃 Server ready at http://localhost:${port}/starwars`);
+        io:println(string `💃 Server ready at http://localhost:${port}/graphql`);
         io:println(string `Try your queries here: http://localhost:${port}/graphiql`);
     }
 
