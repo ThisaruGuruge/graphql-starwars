@@ -17,7 +17,6 @@
 import starwars.datasource as ds;
 
 import ballerina/graphql;
-import ballerina/io;
 
 import xlibb/pubsub;
 
@@ -52,11 +51,6 @@ public type ReviewInput record {|
 }
 service /graphql on new graphql:Listener(port) {
     private final pubsub:PubSub pubsub = new;
-
-    function init() {
-        io:println(string `💃 Server ready at http://localhost:${port}/graphql`);
-        io:println(string `Try your queries here: http://localhost:${port}/graphiql`);
-    }
 
     # Fetch the hero of the Star Wars
     # + return - The hero
